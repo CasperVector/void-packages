@@ -1,0 +1,32 @@
+# Template file for 'virtualbox-addons'
+pkgname=virtualbox-addons
+version=5.2.8
+revision=1
+short_desc="VirtualBox addition image and extension pack"
+maintainer="Casper Ti. Vector <caspervector@gmail.com>"
+license="GPL-2, LGPL-2.1, MIT, SGI-B-2.0, CDDL, PUEL"
+homepage="http://virtualbox.org"
+_names=(VBoxGuestAdditions Oracle_VM_VirtualBox_Extension_Pack)
+distfiles="https://download.virtualbox.org/virtualbox/$version/${_names[0]}_$version.iso
+ https://download.virtualbox.org/virtualbox/$version/${_names[1]}-$version.vbox-extpack>$version.tgz"
+checksum="80b6b4a6c6789fd5957d07562dd2bdd89dd2abd99cb588e15b784ed89b680813
+ 355ea5fe047f751534720c65398b44290d53f389e0f5f66818f3f36746631d26"
+skip_extraction="${_names[0]}_$version.iso"
+only_for_archs="i686 x86_64"
+depends="virtualbox-ose-${version}_${revision}"
+restricted=yes
+repository=nonfree
+create_wrksrc=yes
+nostrip=yes
+allow_unknown_shlibs=yes
+
+do_install() {
+	[ "$XBPS_MACHINE" = "x86_64" ] && arch=amd64 || arch=x86
+	extdir=usr/lib/virtualbox/ExtensionPacks/${_names[1]}
+	vmkdir usr/share/virtualbox
+	vinstall ${XBPS_SRCDISTDIR}/${pkgname}-${version}/${_names[0]}_$version.iso \
+		0644 usr/share/virtualbox ${_names[0]}.iso
+	vmkdir $extdir
+	for f in ExtPack-license.*; do vlicense $f; mv $f _$f; done
+	for f in linux.$arch ExtPack* PXE-Intel.rom; do vcopy $f $extdir; done
+}
