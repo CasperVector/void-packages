@@ -1,0 +1,17 @@
+# Template file for 'fcitx-sunpinyin'
+pkgname=fcitx-sunpinyin
+version=0.4.2
+revision=1
+build_style=cmake
+hostmakedepends="pkg-config"
+makedepends="fcitx-devel sunpinyin-devel sqlite-devel"
+short_desc="Chinese sunpinyin input method for Fcitx"
+maintainer="Casper Ti. Vector <caspervector@gmail.com>"
+license="GPL-2"
+homepage="https://github.com/fcitx/fcitx-sunpinyin"
+distfiles="https://download.fcitx-im.org/$pkgname/$pkgname-$version.tar.xz"
+checksum=0bf2d72d77732f06e7f04c119507c08b9618b21c4027e3997186bd7e4d0788c4
+
+post_install() {
+	vdoc AUTHORS
+}

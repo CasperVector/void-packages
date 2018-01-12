@@ -1,0 +1,15 @@
+# Template file for 'base-system'
+pkgname=sunpinyin
+version=3.0.0rc1
+revision=1
+build_style=meta
+short_desc="A statistical language model based Chinese input method library"
+homepage="https://github.com/sunpinyin/sunpinyin"
+license="LGPL-2.1 CDDL"
+maintainer="Casper Ti. Vector <caspervector@gmail.com>"
+case "$XBPS_TARGET_MACHINE" in
+	mips-musl|mipshf-musl) _end=be;;
+	*) _end=le;;
+esac
+depends="sunpinyin-core-${version}_${revision} sunpinyin-data-${_end}>=20140820"
+

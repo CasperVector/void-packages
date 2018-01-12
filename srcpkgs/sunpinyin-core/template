@@ -1,0 +1,41 @@
+# Template file for 'sunpinyin-core'
+pkgname=sunpinyin-core
+version=3.0.0rc1
+revision=1
+_ver=${version/rc/-rc}
+wrksrc=sunpinyin-$_ver
+hostmakedepends="scons pkg-config intltool gettext"
+makedepends="sqlite-devel"
+_desc="A statistical language model based Chinese input method library"
+short_desc="$_desc - core"
+maintainer="Casper Ti. Vector <caspervector@gmail.com>"
+license="LGPL-2.1 CDDL"
+homepage="https://github.com/sunpinyin/sunpinyin"
+distfiles="https://github.com/sunpinyin/sunpinyin/archive/v$_ver.tar.gz"
+checksum=692455b645803bfc6c2e53151bb9ccbae1a4b813a18d87607d19d14ae9354780
+
+do_build() {
+	scons ${makejobs} --prefix=/usr
+}
+
+do_install() {
+	scons --prefix=/usr --install-sandbox=$DESTDIR install
+}
+
+sunpinyin-devel_package() {
+	depends="${sourcepkg}>=${version}_${revision}"
+	short_desc="$_desc - development files"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/pkgconfig
+		vmove usr/lib/libsunpinyin.so
+	}
+}
+
+sunpinyin-utils_package() {
+	short_desc="$_desc - dictionary utilities"
+	pkg_install() {
+		vmove usr/bin
+		vmove usr/share
+	}
+}
